@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POKEMON!</title>
+  <script defer type="text/javascript" src="./js/index.js"></script>
+</head>
+<body>
+  <h1>POKEMON! 🔥💧🌱</h1>
+
+  <section id="select-pet">
+    
+    <h2>Select your pet:</h2>
+
+    <label for="bulbasaur">Bulbasaur</label>
+    <input type="radio" name="pet" id="bulbasaur" value="Bulbasaur">
+    
+    <label for="charmander">Charmander</label>
+    <input type="radio" name="pet" id="charmander" value="Charmander">
+
+    <label for="squirtle">Squirtle</label>
+    <input type="radio" name="pet" id="squirtle" value="Squirtle">
+
+    <button id="button-pet">Select</button>
+
+  </section>
+  <section id="select-attack">
+    <h2>Select your attack:</h2>
+
+    <p>Your pet has <span id="pet-player"></span> <span>3</span> lives</p>
+
+    <p>The enemy's pet has <span id="pet-enemy"></span> <span>3</span> lives</p>
+
+    <p>
+      <button id="button-fire">Fire 🔥</button>
+      <button id="button-water">Water 💧</button>
+      <button id="button-plant">Plant 🌱</button>
+    </p>
+
+  </section>
+
+  <section id="messages">
+    <p>Your pet attacked with FIRE, the enemy's pet attacked with PLANT - WIN 🎉</p>
+  </section>
+
+  <section id="restart">
+    <button id="button-restart">Restart</button>
+  </section>
+
+</body>
+</html>
