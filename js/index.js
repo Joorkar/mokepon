@@ -1,9 +1,29 @@
 let attackPlayer
 let attackEnemy
 
-const createMessage = () => {
-  const paragraph = document.createElement('p')
-  
+const createMessage = (result) => {
+  let sectionMessage = document.getElementById('messages')
+
+  let paragraph = document.createElement('p')
+  paragraph.innerHTML = `Your pet attacked with ${attackPlayer}, the enemy's pet attacked with ${attackEnemy} - ${result}`
+
+  sectionMessage.appendChild(paragraph)
+}
+
+const combat = () => {
+  switch (true) {
+    case attackEnemy === attackPlayer:
+      createMessage('TIE 😑')
+      break;
+    case attackEnemy === 'FIRE' && attackPlayer === 'PLANT'
+      || attackEnemy === 'WATER' && attackPlayer === 'FIRE'
+      || attackEnemy === 'PLANT' && attackPlayer === 'WATER':
+      createMessage('WIN ✅')
+      break;
+    default:
+      createMessage('LOSE ❌')
+      break;
+  }
 }
 
 const attackRandomEnemy = () => {
@@ -21,7 +41,7 @@ const attackRandomEnemy = () => {
       break;
   }
 
-  createMessage()
+  combat()
 }
 
 const attackFire = () => {
