@@ -1,5 +1,7 @@
 let attackPlayer
 let attackEnemy
+let playerLives = 3
+let enemyLives = 3
 
 const createMessage = (result) => {
   let sectionMessage = document.getElementById('messages')
@@ -10,20 +12,46 @@ const createMessage = (result) => {
   sectionMessage.appendChild(paragraph)
 }
 
+const createFinalMessage = (finalResult) => {
+  let sectionMessage = document.getElementById('messages')
+
+  let paragraph = document.createElement('p')
+  paragraph.innerHTML = finalResult
+
+  sectionMessage.appendChild(paragraph)
+}
+
+const checkLives = () => {
+  if (enemyLives === 0) {
+    createFinalMessage(`Congratulations! You Win 😄`)
+  } else if (playerLives === 0) {
+    createFinalMessage(`Sorry, you lose 😔`)
+  }
+}
+
 const combat = () => {
+  let spanPlayerLives = document.getElementById('player-lives')
+  let spanEnemyLives = document.getElementById('enemy-lives')
+
   switch (true) {
     case attackEnemy === attackPlayer:
-      createMessage('TIE 😑')
+      createMessage('DEAD HEAT 😑')
       break;
     case attackEnemy === 'FIRE' && attackPlayer === 'PLANT'
       || attackEnemy === 'WATER' && attackPlayer === 'FIRE'
       || attackEnemy === 'PLANT' && attackPlayer === 'WATER':
       createMessage('WIN ✅')
+      enemyLives--
+      spanEnemyLives.innerHTML = enemyLives
       break;
     default:
       createMessage('LOSE ❌')
+      playerLives--
+      spanPlayerLives.innerHTML = playerLives
       break;
   }
+
+  checkLives()
 }
 
 const attackRandomEnemy = () => {
