@@ -3,6 +3,15 @@ let attackEnemy
 let playerLives = 3
 let enemyLives = 3
 
+let sectionInicialNone = [
+  document.getElementById('select-attack'),
+  document.getElementById('restart'),
+  document.getElementById('select-pet'),
+]
+sectionInicialNone[0].style.display = 'none'
+sectionInicialNone[1].style.display = 'none'
+
+
 const createMessage = (result) => {
   let sectionMessage = document.getElementById('messages')
 
@@ -19,6 +28,12 @@ const createFinalMessage = (finalResult) => {
   paragraph.innerHTML = finalResult
 
   sectionMessage.appendChild(paragraph)
+
+  buttonFire.disabled = true
+  buttonWater.disabled = true
+  buttonPlant.disabled = true
+
+  sectionInicialNone[1].style.display = 'block'
 }
 
 const checkLives = () => {
@@ -87,11 +102,11 @@ const attackPlant = () => {
   attackRandomEnemy()
 }
 
-let buttonFire = document.getElementById('button-fire');
+let buttonFire = document.getElementById('button-fire')
   buttonFire.addEventListener('click', attackFire)
-let buttonWater = document.getElementById('button-water');
+let buttonWater = document.getElementById('button-water')
   buttonWater.addEventListener('click', attackWater)
-let buttonPlant = document.getElementById('button-plant');
+let buttonPlant = document.getElementById('button-plant')
   buttonPlant.addEventListener('click', attackPlant)
 
 const random = (min,max) => Math.floor(Math.random() * (max - min + 1) + min)
@@ -114,6 +129,9 @@ const selectPetEnemy = () => {
 }
 
 const selectPetPlayer = () => {
+  sectionInicialNone[2].style.display = 'none'
+  sectionInicialNone[0].style.display = 'block'
+
   let inputBulbasaur = document.getElementById('bulbasaur')
   let inputCharmander = document.getElementById('charmander')
   let inputSquirtle = document.getElementById('squirtle')
@@ -140,3 +158,9 @@ const selectPetPlayer = () => {
 let buttonPetPlayer = document.getElementById('button-pet');
 buttonPetPlayer.addEventListener('click', selectPetPlayer);
 
+const restartGame = () => {
+  location.reload();
+}
+
+let restartButton = document.getElementById('button-restart');
+restartButton.addEventListener('click', restartGame)
