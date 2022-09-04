@@ -1,6 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300&display=swap');
+
+:root {
+  --color-primary: #1C3879;
+  --color-secondary: #607EAA;
+  --color-light-primary: #F9F5EB;
+  --color-ligth-secondary: #EAE3D2;
+}
+
+body {
+  height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  background-color: var(--color-primary);
+  font-family: 'Poppins', sans-serif;
+}
+
+.select-pet {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .title {
-  width: 310px;
-  height: 50px;
-  color: thistle;
-  background-color: aquamarine;
+color: var(--color-light-primary);
+font-family: 'Fredoka One', cursive;
+  font-size: 32px;
+  }
+  
+  .subtitle {
+    color: var(--color-light-primary);
+    font-size: 20px;
+  }
+  
+  .cards {
+    display: flex;
+gap: 10px;
+}
+
+.pokemon-card {
+  width: 110px;
+    height: 140px;
+    background-color: var(--color-secondary);
+  padding: 10px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-light-primary);
+  }
+  
+  .pokemon-card:active {
+    background-color: var(--color-ligth-secondary);
+    color: var(--color-secondary)
+  }
+  
+  .pokemon-card img {
+    width: 80px;
+  }
+  
+  input {
+    display: none;
+  }
+  
+  #button-pet {
+    width: 160px;
+    height: 40px;
+    border-radius: 20px;
+  background: transparent;
+    border: 1px solid var(--color-ligth-secondary);
+    color: var(--color-light-primary);
+    font-family: 'Poppins', sans-serif;
+    margin-top: 20px;
+  }
+  
+  #button-pet:active {
+    background-color: var(--color-ligth-secondary);
+    color: var(--color-secondary);
 }

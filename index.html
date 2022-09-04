@@ -9,20 +9,28 @@
   <script defer type="text/javascript" src="./js/index.js"></script>
 </head>
 <body>
-  <h1 class="title">POKEMON! 🔥💧🌱</h1>
+  <section class="select-pet" id="select-pet">
+    <h1 class="title">Pokemon 🔥💧🌱</h1>
 
-  <section id="select-pet">
-    
-    <h2>Select your pet:</h2>
+    <h2 class="subtitle">Select your pet:</h2>
 
-    <label for="bulbasaur">Bulbasaur</label>
-    <input type="radio" name="pet" id="bulbasaur" value="Bulbasaur">
-    
-    <label for="charmander">Charmander</label>
-    <input type="radio" name="pet" id="charmander" value="Charmander">
-
-    <label for="squirtle">Squirtle</label>
-    <input type="radio" name="pet" id="squirtle" value="Squirtle">
+    <div class="cards">
+      <label class="pokemon-card" for="bulbasaur">
+        <p>Bulbasaur</p>
+        <img src="./assets/Bulbasaur.png" alt="Bulbasaur" />
+      </label>
+      <input type="radio" name="pet" id="bulbasaur" value="Bulbasaur">
+      <label class="pokemon-card" for="charmander">
+        <p>Charmander</p>
+        <img src="./assets/Charmander.png" alt="Charmander" />
+      </label>
+      <input type="radio" name="pet" id="charmander" value="Charmander">
+      <label class="pokemon-card" for="squirtle">
+        <p>Squirtle</p>
+        <img src="./assets/Squirtle.png" alt="Squirtle" />
+      </label>
+      <input type="radio" name="pet" id="squirtle" value="Squirtle">
+    </div>
 
     <button id="button-pet">Select</button>
 

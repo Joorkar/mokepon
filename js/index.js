@@ -149,6 +149,7 @@ const selectPetPlayer = () => {
       break
     default:
       alert(`Please, select your pet`)
+      location.reload()
       break;
   }
 
