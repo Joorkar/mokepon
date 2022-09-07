@@ -13,21 +13,25 @@ sectionInicialNone[1].style.display = 'none'
 
 
 const createMessage = (result) => {
-  let sectionMessage = document.getElementById('messages')
+  let resultMessage = document.getElementById('result')
+  let playerAttacksMessage = document.getElementById('player-attacks')
+  let enemyAttacksMessage = document.getElementById('enemy-attacks')
 
-  let paragraph = document.createElement('p')
-  paragraph.innerHTML = `Your pet attacked with ${attackPlayer}, the enemy's pet attacked with ${attackEnemy} - ${result}`
+  let newPlayerAttack = document.createElement('p')
+  let newEnemyAttack = document.createElement('p')
 
-  sectionMessage.appendChild(paragraph)
+  resultMessage.innerHTML = result
+  newPlayerAttack.innerHTML = attackPlayer
+  newEnemyAttack.innerHTML = attackEnemy
+
+  playerAttacksMessage.appendChild(newPlayerAttack)
+  enemyAttacksMessage.appendChild(newEnemyAttack)
 }
 
 const createFinalMessage = (finalResult) => {
-  let sectionMessage = document.getElementById('messages')
+  let resultMessage = document.getElementById('result')
 
-  let paragraph = document.createElement('p')
-  paragraph.innerHTML = finalResult
-
-  sectionMessage.appendChild(paragraph)
+  resultMessage.innerHTML = finalResult
 
   buttonFire.disabled = true
   buttonWater.disabled = true
@@ -130,7 +134,7 @@ const selectPetEnemy = () => {
 
 const selectPetPlayer = () => {
   sectionInicialNone[2].style.display = 'none'
-  sectionInicialNone[0].style.display = 'block'
+  sectionInicialNone[0].style.display = 'flex'
 
   let inputBulbasaur = document.getElementById('bulbasaur')
   let inputCharmander = document.getElementById('charmander')
