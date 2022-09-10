@@ -34,7 +34,8 @@ body {
   font-size: 20px;
 }
 
-.cards {
+.cards,
+.attacks {
   display: flex;
   gap: 10px;
 }
@@ -84,10 +85,9 @@ width: 110px;
   flex-direction: column;
   align-items: center;
 }
-
 .button-attack {
   width: 100px;
-  height: 30px;
+    height: 40px;
   box-sizing: border-box;
   text-align: center;
   border-radius: 20px;
@@ -121,4 +121,69 @@ width: 110px;
   font-family: 'Poppins', sans-serif;
   font-size: 14px;
   font-weight: bold;
+}
+.attacks-counter {
+  display: grid;
+  grid-template-columns: 120px 120px;
+  text-align: center;
+  gap: 20px;
+}
+
+.attacks-player,
+.attacks-enemy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#player-lives,
+#enemy-lives {
+  margin: 10px 0 0 0;
+  font-size: 30px;
+  color: var(--color-light-primary);
+}
+
+#pet-player,
+#pet-enemy {
+  margin: 10px 0 0 0;
+  font-size: 20px;
+  color: var(--color-light-primary);
+}
+
+.attacks-player p,
+.attacks-enemy p {
+  margin: 0;
+  font-size: 18px;
+  color: var(--color-light-primary);
+}
+
+@media (max-width: 360px) {
+  .cards {
+    flex-direction: column;
+  }
+
+  .pokemon-card {
+    height: 120px;
+  }
+
+  label>p {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .attacks {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #pet-player,
+  #pet-enemy {
+    font-size: 16px;
+  }
+
+  .attacks-player p,
+  .attacks-enemy p {
+    margin: 5px 0 0 0;
+    font-size: 14px;
+  }
 }
