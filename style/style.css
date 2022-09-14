@@ -54,32 +54,31 @@ width: 110px;
     color: var(--color-light-primary);
 }
 .pokemon-card:active {
-    background-color: var(--color-ligth-secondary);
+  background-color: var(--color-ligth-secondary);
     color: var(--color-secondary)
   }
 
-  .pokemon-card img {
-    width: 80px;
-  }
+.pokemon-card img {
+  width: 80px;
+}
 
-  input {
-    display: none;
-  }
+input {
+  display: none;
+}
 
-  #button-pet {
-    width: 160px;
-    height: 40px;
-    border-radius: 20px;
-  background: transparent;
-  border: 1px solid var(--color-ligth-secondary);
-    color: var(--color-light-primary);
-    font-family: 'Poppins', sans-serif;
-    margin-top: 20px;
-  }
-  
-#button-pet:active {
+input:checked+label {
   background-color: var(--color-ligth-secondary);
   color: var(--color-secondary);
+}
+#button-pet {
+  width: 160px;
+  height: 40px;
+  border-radius: 20px;
+  background: transparent;
+  border: 1px solid var(--color-ligth-secondary);
+  color: var(--color-light-primary);
+    font-family: 'Poppins', sans-serif;
+    margin-top: 20px;
 }
 #select-attack {
   flex-direction: column;
@@ -95,6 +94,10 @@ width: 110px;
   color: var(--color-light-primary);
   background-color: var(--color-secondary);
   font-family: 'Poppins', sans-serif;
+}
+.button-attack:hover {
+  background-color: var(--color-ligth-secondary);
+  color: var(--color-secondary);
 }
 
 #messages {
