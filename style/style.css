@@ -139,8 +139,8 @@ input:checked+label {
   align-items: center;
 }
 
-#player-lives,
-#enemy-lives {
+#player-lifes,
+#enemy-lifes {
   margin: 10px 0 0 0;
   font-size: 30px;
   color: var(--color-light-primary);

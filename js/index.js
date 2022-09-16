@@ -1,30 +1,38 @@
-const inputBulbasaur = document.getElementById('bulbasaur')
-const inputCharmander = document.getElementById('charmander')
-const inputSquirtle = document.getElementById('squirtle')
-
 const spanPetPlayer = document.getElementById('pet-player')
 const spanPetEnemy = document.getElementById('pet-enemy')
 const spanPlayerlifes = document.getElementById('player-lifes')
 const spanEnemylifes = document.getElementById('enemy-lifes')
 
+const cardsContainer = document.getElementById('cards-container')
 const resultMessage = document.getElementById('result')
 
 const playerAttacksMessage = document.getElementById('player-attacks')
 const enemyAttacksMessage = document.getElementById('enemy-attacks')
 
-const buttonFire = document.getElementById('button-fire')
-const buttonWater = document.getElementById('button-water')
-const buttonPlant = document.getElementById('button-plant')
-
 const buttonPetPlayer = document.getElementById('button-pet');
 const restartButton = document.getElementById('button-restart');
+const containerAttacks = document.getElementById('container-attacks');
 
-let pokemones = []
+let pokemons = []
 let attackPlayer
 let attackEnemy
+let pokemonsOptions
+let inputBulbasaur
+let inputCharmander
+let inputSquirtle
+let petPlayer
+let pokemonsAttacks
+let buttonFire = document.getElementById('button-fire')
+let buttonWater = document.getElementById('button-water')
+let buttonPlant = document.getElementById('button-plant')
 let playerlifes = 3
 let enemylifes = 3
 
+const sectionInicialNone = [
+  document.getElementById('select-attack'),
+  document.getElementById('restart'),
+  document.getElementById('select-pet'),
+]
 class Pokemon {
   constructor(name, photo, life) {
     this.name = name
@@ -39,36 +47,49 @@ let charmander = new Pokemon('Charmander', './assets/Charmander.png', 5)
 let squirtle = new Pokemon('Squirtle', './assets/Squirtle.png', 5)
 
 bulbasaur.attacks.push(
-  { name: '💧', id: 'button-water' },
-  { name: '💧', id: 'button-water' },
-  { name: '💧', id: 'button-water' },
-  { name: '🔥', id: 'button-fire' },
-  { name: '🌱', id: 'button-plant' },
+  { name: 'Water 💧', id: 'button-water' },
+  { name: 'Water 💧', id: 'button-water' },
+  { name: 'Water 💧', id: 'button-water' },
+  { name: 'Fire 🔥', id: 'button-fire' },
+  { name: 'Plant 🌱', id: 'button-plant' },
 )
 
 charmander.attacks.push(
-  { name: '🔥', id: 'button-fire' },
-  { name: '🔥', id: 'button-fire' },
-  { name: '🔥', id: 'button-fire' },
-  { name: '💧', id: 'button-water' },
-  { name: '🌱', id: 'button-plant' },
+  { name: 'Fire 🔥', id: 'button-fire' },
+  { name: 'Fire 🔥', id: 'button-fire' },
+  { name: 'Fire 🔥', id: 'button-fire' },
+  { name: 'Water 💧', id: 'button-water' },
+  { name: 'Plant 🌱', id: 'button-plant' },
 )
 
 squirtle.attacks.push(
-  { name: '🌱', id: 'button-plant' },
-  { name: '🌱', id: 'button-plant' },
-  { name: '🌱', id: 'button-plant' },
-  { name: '🔥', id: 'button-fire' },
-  { name: '💧', id: 'button-water' },
+  { name: 'Plant 🌱', id: 'button-plant' },
+  { name: 'Plant 🌱', id: 'button-plant' },
+  { name: 'Plant 🌱', id: 'button-plant' },
+  { name: 'Fire 🔥', id: 'button-fire' },
+  { name: 'Water 💧', id: 'button-water' },
 )
 
-const sectionInicialNone = [
-  document.getElementById('select-attack'),
-  document.getElementById('restart'),
-  document.getElementById('select-pet'),
-]
+pokemons.push(bulbasaur, charmander, squirtle)
+
 sectionInicialNone[0].style.display = 'none'
 sectionInicialNone[1].style.display = 'none'
+
+pokemons.forEach((pokemon) => {
+  pokemonsOptions = `
+    <input type="radio" name="pet" id=${pokemon.name} value=${pokemon.name}>
+    <label class="pokemon-card" for=${pokemon.name}>
+      <p>${pokemon.name}</p>
+      <img src=${pokemon.photo} alt=${pokemon.name} />
+    </label>
+  `
+
+  cardsContainer.innerHTML += pokemonsOptions
+
+  inputBulbasaur = document.getElementById('Bulbasaur')
+  inputCharmander = document.getElementById('Charmander')
+  inputSquirtle = document.getElementById('Squirtle')
+})
 
 const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 
@@ -157,24 +178,40 @@ const attackPlant = () => {
   attackRandomEnemy()
 }
 
-buttonFire.addEventListener('click', attackFire)
-buttonWater.addEventListener('click', attackWater)
-buttonPlant.addEventListener('click', attackPlant)
-
 const selectPetEnemy = () => {
-  let petRandom = random(1, 3)
+  let petRandom = random(0, pokemons.length - 1)
 
-  switch (true) {
-    case petRandom === 1:
-      spanPetEnemy.innerHTML = `Bulbasaur`
-      break;
-    case petRandom === 2:
-      spanPetEnemy.innerHTML = `Charmander`
-      break;
-    default:
-      spanPetEnemy.innerHTML = `Squirtle`
-      break;
-  }
+  spanPetEnemy.innerHTML = pokemons[petRandom].name
+}
+
+const showAttacks = (attacks) => {
+  attacks.forEach((attack) => {
+    pokemonsAttacks = `
+    <button id=${attack.id} class="button-attack">${attack.name}</button>
+    `
+
+    containerAttacks.innerHTML += pokemonsAttacks
+  })
+
+  buttonFire = document.getElementById('button-fire')
+  buttonWater = document.getElementById('button-water')
+  buttonPlant = document.getElementById('button-plant')
+
+  buttonFire.addEventListener('click', attackFire)
+  buttonWater.addEventListener('click', attackWater)
+  buttonPlant.addEventListener('click', attackPlant)
+}
+
+const pullAttacks = (petPlayer) => {
+  let attacks
+
+  pokemons.forEach((pokemon) => {
+    if (petPlayer === pokemon.name) {
+      attacks = pokemon.attacks
+    }
+  })
+
+  showAttacks(attacks)
 }
 
 const selectPetPlayer = () => {
@@ -183,19 +220,24 @@ const selectPetPlayer = () => {
 
   switch (true) {
     case inputBulbasaur.checked:
-      spanPetPlayer.innerHTML = `Bulbasaur`
+      spanPetPlayer.innerHTML = inputBulbasaur.id
+      petPlayer = inputBulbasaur.id
       break;
     case inputCharmander.checked:
-      spanPetPlayer.innerHTML = `Charmander`
+      spanPetPlayer.innerHTML = inputCharmander.id
+      petPlayer = inputCharmander.id
       break
     case inputSquirtle.checked:
-      spanPetPlayer.innerHTML = `Squirtle`
+      spanPetPlayer.innerHTML = inputSquirtle.id
+      petPlayer = inputSquirtle.id
       break
     default:
       alert(`Please, select your pet`)
       location.reload()
       break;
   }
+
+  pullAttacks(petPlayer)
 
   selectPetEnemy()
 }
