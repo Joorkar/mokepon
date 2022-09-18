@@ -14,17 +14,19 @@ const restartButton = document.getElementById('button-restart');
 const containerAttacks = document.getElementById('container-attacks');
 
 let pokemons = []
-let attackPlayer
-let attackEnemy
+let attackPlayer = []
+let attackEnemy = []
 let pokemonsOptions
 let inputBulbasaur
 let inputCharmander
 let inputSquirtle
 let petPlayer
 let pokemonsAttacks
-let buttonFire = document.getElementById('button-fire')
-let buttonWater = document.getElementById('button-water')
-let buttonPlant = document.getElementById('button-plant')
+let pokemonsAttacksEnemy
+let buttonFire
+let buttonWater
+let buttonPlant
+let buttons = []
 let playerlifes = 3
 let enemylifes = 3
 
@@ -47,27 +49,27 @@ let charmander = new Pokemon('Charmander', './assets/Charmander.png', 5)
 let squirtle = new Pokemon('Squirtle', './assets/Squirtle.png', 5)
 
 bulbasaur.attacks.push(
-  { name: 'Water 💧', id: 'button-water' },
-  { name: 'Water 💧', id: 'button-water' },
-  { name: 'Water 💧', id: 'button-water' },
-  { name: 'Fire 🔥', id: 'button-fire' },
-  { name: 'Plant 🌱', id: 'button-plant' },
+  { name: '💧', id: 'button-water' },
+  { name: '💧', id: 'button-water' },
+  { name: '💧', id: 'button-water' },
+  { name: '🔥', id: 'button-fire' },
+  { name: '🌱', id: 'button-plant' },
 )
 
 charmander.attacks.push(
-  { name: 'Fire 🔥', id: 'button-fire' },
-  { name: 'Fire 🔥', id: 'button-fire' },
-  { name: 'Fire 🔥', id: 'button-fire' },
-  { name: 'Water 💧', id: 'button-water' },
-  { name: 'Plant 🌱', id: 'button-plant' },
+  { name: '🔥', id: 'button-fire' },
+  { name: '🔥', id: 'button-fire' },
+  { name: '🔥', id: 'button-fire' },
+  { name: '💧', id: 'button-water' },
+  { name: '🌱', id: 'button-plant' },
 )
 
 squirtle.attacks.push(
-  { name: 'Plant 🌱', id: 'button-plant' },
-  { name: 'Plant 🌱', id: 'button-plant' },
-  { name: 'Plant 🌱', id: 'button-plant' },
-  { name: 'Fire 🔥', id: 'button-fire' },
-  { name: 'Water 💧', id: 'button-water' },
+  { name: '🌱', id: 'button-plant' },
+  { name: '🌱', id: 'button-plant' },
+  { name: '🌱', id: 'button-plant' },
+  { name: '🔥', id: 'button-fire' },
+  { name: '💧', id: 'button-water' },
 )
 
 pokemons.push(bulbasaur, charmander, squirtle)
@@ -146,48 +148,55 @@ const combat = () => {
 }
 
 const attackRandomEnemy = () => {
-  let attackRandom = random(1,3)
+  let attackRandom = random(0, pokemonsAttacksEnemy.length - 1)
 
   switch (true) {
-    case attackRandom === 1:
-      attackEnemy = 'FIRE'
+    case attackRandom === 0 || attackRandom === 1:
+      attackEnemy.push('FIRE')
       break;
-    case attackRandom === 2:
-      attackEnemy = 'WATER'
+    case attackRandom === 3 || attackRandom === 4:
+      attackEnemy.push('WATER')
       break;
     default:
-      attackEnemy = 'PLANT'
+      attackEnemy.push('PLANT')
       break;
   }
+
+  console.log(attackEnemy);
 
   combat()
 }
 
-const attackFire = () => {
-  attackPlayer = `FIRE`
-  attackRandomEnemy()
-}
-
-const attackWater = () => {
-  attackPlayer = `WATER`
-  attackRandomEnemy()
-}
-
-const attackPlant = () => {
-  attackPlayer = `PLANT`
-  attackRandomEnemy()
+const attackSequence = () => {
+  buttons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+      if (e.target.textContent === '🔥') {
+        attackPlayer.push('FIRE')
+        button.style.background = '#112f58'
+      } else if (e.target.textContent === '💧') {
+        attackPlayer.push('WATER')
+        button.style.background = '#112f58'
+      } else {
+        attackPlayer.push('PLANT')
+        button.style.background = '#112f58'
+      }
+      attackRandomEnemy()
+    })
+  })
 }
 
 const selectPetEnemy = () => {
   let petRandom = random(0, pokemons.length - 1)
 
   spanPetEnemy.innerHTML = pokemons[petRandom].name
+  pokemonsAttacksEnemy = pokemons[petRandom].attacks
+  attackSequence()
 }
 
 const showAttacks = (attacks) => {
   attacks.forEach((attack) => {
     pokemonsAttacks = `
-    <button id=${attack.id} class="button-attack">${attack.name}</button>
+    <button id=${attack.id} class="button-attack BAttack">${attack.name}</button>
     `
 
     containerAttacks.innerHTML += pokemonsAttacks
@@ -196,10 +205,7 @@ const showAttacks = (attacks) => {
   buttonFire = document.getElementById('button-fire')
   buttonWater = document.getElementById('button-water')
   buttonPlant = document.getElementById('button-plant')
-
-  buttonFire.addEventListener('click', attackFire)
-  buttonWater.addEventListener('click', attackWater)
-  buttonPlant.addEventListener('click', attackPlant)
+  buttons = document.querySelectorAll('.BAttack')
 }
 
 const pullAttacks = (petPlayer) => {
