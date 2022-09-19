@@ -1,16 +1,15 @@
 const spanPetPlayer = document.getElementById('pet-player')
 const spanPetEnemy = document.getElementById('pet-enemy')
+const buttonPetPlayer = document.getElementById('button-pet');
+const restartButton = document.getElementById('button-restart');
+
 const spanPlayerlifes = document.getElementById('player-lifes')
 const spanEnemylifes = document.getElementById('enemy-lifes')
 
-const cardsContainer = document.getElementById('cards-container')
 const resultMessage = document.getElementById('result')
-
 const playerAttacksMessage = document.getElementById('player-attacks')
 const enemyAttacksMessage = document.getElementById('enemy-attacks')
-
-const buttonPetPlayer = document.getElementById('button-pet');
-const restartButton = document.getElementById('button-restart');
+const cardsContainer = document.getElementById('cards-container')
 const containerAttacks = document.getElementById('container-attacks');
 
 let pokemons = []
@@ -27,6 +26,10 @@ let buttonFire
 let buttonWater
 let buttonPlant
 let buttons = []
+let indexAttackPlayer
+let indexAttackEnemy
+let victoriesPlayer = 0
+let victoriesEnemy = 0
 let playerlifes = 3
 let enemylifes = 3
 
@@ -49,11 +52,11 @@ let charmander = new Pokemon('Charmander', './assets/Charmander.png', 5)
 let squirtle = new Pokemon('Squirtle', './assets/Squirtle.png', 5)
 
 bulbasaur.attacks.push(
-  { name: '💧', id: 'button-water' },
-  { name: '💧', id: 'button-water' },
-  { name: '💧', id: 'button-water' },
-  { name: '🔥', id: 'button-fire' },
   { name: '🌱', id: 'button-plant' },
+  { name: '🌱', id: 'button-plant' },
+  { name: '🌱', id: 'button-plant' },
+  { name: '🔥', id: 'button-fire' },
+  { name: '💧', id: 'button-water' },
 )
 
 charmander.attacks.push(
@@ -65,11 +68,11 @@ charmander.attacks.push(
 )
 
 squirtle.attacks.push(
-  { name: '🌱', id: 'button-plant' },
-  { name: '🌱', id: 'button-plant' },
-  { name: '🌱', id: 'button-plant' },
-  { name: '🔥', id: 'button-fire' },
   { name: '💧', id: 'button-water' },
+  { name: '💧', id: 'button-water' },
+  { name: '💧', id: 'button-water' },
+  { name: '🔥', id: 'button-fire' },
+  { name: '🌱', id: 'button-plant' },
 )
 
 pokemons.push(bulbasaur, charmander, squirtle)
@@ -100,8 +103,8 @@ const createMessage = (result) => {
   let newEnemyAttack = document.createElement('p')
 
   resultMessage.innerHTML = result
-  newPlayerAttack.innerHTML = attackPlayer
-  newEnemyAttack.innerHTML = attackEnemy
+  newPlayerAttack.innerHTML = indexAttackPlayer
+  newEnemyAttack.innerHTML = indexAttackEnemy
 
   playerAttacksMessage.appendChild(newPlayerAttack)
   enemyAttacksMessage.appendChild(newEnemyAttack)
@@ -109,42 +112,60 @@ const createMessage = (result) => {
 
 const createFinalMessage = (finalResult) => {
   resultMessage.innerHTML = finalResult
-
-  buttonFire.disabled = true
-  buttonWater.disabled = true
-  buttonPlant.disabled = true
-
   sectionInicialNone[1].style.display = 'block'
 }
 
-const checklifes = () => {
-  if (enemylifes === 0) {
-    createFinalMessage(`Congratulations! You Win 😄`)
-  } else if (playerlifes === 0) {
-    createFinalMessage(`Sorry, you lose 😔`)
+const chechVictories = () => {
+  if (victoriesPlayer === victoriesEnemy) {
+    createFinalMessage(`This was a draw! 😐`)
+  } else if (victoriesPlayer > victoriesEnemy) {
+    createFinalMessage(`Congratulations! Your Win 🎉`)
+  } else {
+    createFinalMessage(`Sorry! Your Lose 😔`)
   }
 }
 
-const combat = () => {
-  switch (true) {
-    case attackEnemy === attackPlayer:
-      createMessage('DEAD HEAT 😑')
-      break;
-    case attackEnemy === 'FIRE' && attackPlayer === 'PLANT'
-      || attackEnemy === 'WATER' && attackPlayer === 'FIRE'
-      || attackEnemy === 'PLANT' && attackPlayer === 'WATER':
-      createMessage('WIN ✅')
-      enemylifes--
-      spanEnemylifes.innerHTML = enemylifes
-      break;
-    default:
-      createMessage('LOSE ❌')
-      playerlifes--
-      spanPlayerlifes.innerHTML = playerlifes
-      break;
-  }
+const indexBothRivals = (player, enemy) => {
+  indexAttackPlayer = attackPlayer[player]
+  indexAttackEnemy = attackEnemy[enemy]
+}
 
-  checklifes()
+const combat = () => {
+  for (let i = 0; i < attackPlayer.length; i++) {
+    if (attackPlayer[i] === attackEnemy[i]) {
+      indexBothRivals(i, i)
+      createMessage('DEAD HEAT 😑')
+    } else if (attackPlayer[i] === 'FIRE' && attackEnemy[i] === 'PLANT') {
+      indexBothRivals(i, i)
+      createMessage('WIN ✅')
+      victoriesPlayer++
+      spanPlayerlifes.innerHTML = victoriesPlayer
+    } else if (attackPlayer[i] === 'WATER' && attackEnemy[i] === 'FIRE') {
+      indexBothRivals(i, i)
+      createMessage('WIN ✅')
+      victoriesPlayer++
+      spanPlayerlifes.innerHTML = victoriesPlayer
+    } else if (attackPlayer[i] === 'PLANT' && attackEnemy[i] === 'WATER') {
+      indexBothRivals(i, i)
+      createMessage('WIN ✅')
+      victoriesPlayer++
+      spanPlayerlifes.innerHTML = victoriesPlayer
+    } else {
+      indexBothRivals(i, i)
+      createMessage('LOSE ❌')
+      victoriesEnemy++
+      spanEnemylifes.innerHTML = victoriesEnemy
+    }
+  }
+  chechVictories()
+}
+
+
+
+const initFight = () => {
+  if (attackPlayer.length === 5) {
+    combat()
+  }
 }
 
 const attackRandomEnemy = () => {
@@ -161,10 +182,8 @@ const attackRandomEnemy = () => {
       attackEnemy.push('PLANT')
       break;
   }
-
   console.log(attackEnemy);
-
-  combat()
+  initFight()
 }
 
 const attackSequence = () => {
@@ -173,12 +192,18 @@ const attackSequence = () => {
       if (e.target.textContent === '🔥') {
         attackPlayer.push('FIRE')
         button.style.background = '#112f58'
+        console.log(attackPlayer)
+        button.disabled = true
       } else if (e.target.textContent === '💧') {
         attackPlayer.push('WATER')
+        console.log(attackPlayer)
         button.style.background = '#112f58'
-      } else {
+        button.disabled = true
+      } else if (e.target.textContent === '🌱') {
         attackPlayer.push('PLANT')
+        console.log(attackPlayer)
         button.style.background = '#112f58'
+        button.disabled = true
       }
       attackRandomEnemy()
     })
@@ -211,12 +236,17 @@ const showAttacks = (attacks) => {
 const pullAttacks = (petPlayer) => {
   let attacks
 
+  /* for (let i = 0; i < pokemons.length; i++) {
+    if (petPlayer === pokemons[i].name) {
+      attacks = pokemons[i].attacks
+    }
+  } */
+
   pokemons.forEach((pokemon) => {
     if (petPlayer === pokemon.name) {
       attacks = pokemon.attacks
     }
   })
-
   showAttacks(attacks)
 }
 
@@ -239,12 +269,11 @@ const selectPetPlayer = () => {
       break
     default:
       alert(`Please, select your pet`)
-      location.reload()
+      restartGame()
       break;
   }
 
   pullAttacks(petPlayer)
-
   selectPetEnemy()
 }
 

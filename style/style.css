@@ -85,7 +85,7 @@ input:checked+label {
   align-items: center;
 }
 .button-attack {
-  width: 100px;
+  width: 80px;
     height: 40px;
   box-sizing: border-box;
   text-align: center;
@@ -160,7 +160,7 @@ input:checked+label {
   color: var(--color-light-primary);
 }
 
-@media (max-width: 360px) {
+@media (max-width: 550px) {
   .cards {
     flex-direction: column;
   }
