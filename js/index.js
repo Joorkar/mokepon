@@ -12,6 +12,9 @@ const enemyAttacksMessage = document.getElementById('enemy-attacks')
 const cardsContainer = document.getElementById('cards-container')
 const containerAttacks = document.getElementById('container-attacks');
 
+const sectionSeeMap = document.getElementById('see-map')
+const map = document.getElementById('map')
+
 let pokemons = []
 let attackPlayer = []
 let attackEnemy = []
@@ -32,6 +35,8 @@ let victoriesPlayer = 0
 let victoriesEnemy = 0
 let playerlifes = 3
 let enemylifes = 3
+let canvas = map.getContext('2d')
+let interval
 
 const sectionInicialNone = [
   document.getElementById('select-attack'),
@@ -44,6 +49,14 @@ class Pokemon {
     this.photo = photo
     this.life = life
     this.attacks = []
+    this.x = 20
+    this.y = 30
+    this.width = 80
+    this.height = 80
+    this.mapPhoto = new Image()
+    this.mapPhoto.src = photo
+    this.speedX = 0
+    this.speedY = 0
   }
 }
 
@@ -79,6 +92,7 @@ pokemons.push(bulbasaur, charmander, squirtle)
 
 sectionInicialNone[0].style.display = 'none'
 sectionInicialNone[1].style.display = 'none'
+sectionSeeMap.style = 'none'
 
 pokemons.forEach((pokemon) => {
   pokemonsOptions = `
@@ -160,8 +174,6 @@ const combat = () => {
   chechVictories()
 }
 
-
-
 const initFight = () => {
   if (attackPlayer.length === 5) {
     combat()
@@ -169,7 +181,18 @@ const initFight = () => {
 }
 
 const attackRandomEnemy = () => {
-  let attackRandom = random(0, pokemonsAttacksEnemy.length - 1)
+  let petRandomSelect = Math.floor(Math.random() * pokemonsAttacksEnemy.length)
+  let petRandomEnemySelected = pokemonsAttacksEnemy[petRandomSelect].name
+
+  if (petRandomEnemySelected === '🔥') {
+    attackEnemy.push('FIRE')
+  } else if (petRandomEnemySelected === '💧') {
+    attackEnemy.push('WATER')
+  } else {
+    attackEnemy.push('PLANT')
+  }
+
+  /* let attackRandom = random(0, pokemonsAttacksEnemy.length - 1)
 
   switch (true) {
     case attackRandom === 0 || attackRandom === 1:
@@ -181,7 +204,7 @@ const attackRandomEnemy = () => {
     default:
       attackEnemy.push('PLANT')
       break;
-  }
+  } */
   console.log(attackEnemy);
   initFight()
 }
@@ -252,7 +275,9 @@ const pullAttacks = (petPlayer) => {
 
 const selectPetPlayer = () => {
   sectionInicialNone[2].style.display = 'none'
-  sectionInicialNone[0].style.display = 'flex'
+  //sectionInicialNone[0].style.display = 'flex'
+  sectionSeeMap.style.display = 'flex'
+  interval = setInterval(drawCharacter, 50)
 
   switch (true) {
     case inputBulbasaur.checked:
@@ -281,6 +306,39 @@ buttonPetPlayer.addEventListener('click', selectPetPlayer);
 
 const restartGame = () => {
   location.reload();
+}
+
+const drawCharacter = () => {
+  bulbasaur.x = bulbasaur.x + bulbasaur.speedX
+  bulbasaur.y = bulbasaur.y + bulbasaur.speedY
+  canvas.clearRect(0, 0, map.width, map.height)
+  canvas.drawImage(
+    bulbasaur.mapPhoto,
+    bulbasaur.x,
+    bulbasaur.y,
+    bulbasaur.width,
+    bulbasaur.height
+  )
+}
+
+const moveRight = () => {
+  bulbasaur.speedX = 5
+}
+
+const moveDown = () => {
+  bulbasaur.speedY = 5
+}
+
+const moveLeft = () => {
+  bulbasaur.speedX = -5
+}
+const moveUp = () => {
+  bulbasaur.speedY = -5
+}
+
+const moveStop = () => {
+  bulbasaur.speedX = 0
+  bulbasaur.speedY = 0
 }
 
 restartButton.addEventListener('click', restartGame)

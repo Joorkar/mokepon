@@ -160,6 +160,15 @@ input:checked+label {
   color: var(--color-light-primary);
 }
 
+#see-map {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#map {
+  border: 2px solid white;
+}
 @media (max-width: 550px) {
   .cards {
     flex-direction: column;
