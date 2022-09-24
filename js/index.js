@@ -23,6 +23,7 @@ let inputBulbasaur
 let inputCharmander
 let inputSquirtle
 let petPlayer
+let petPlayerObject
 let pokemonsAttacks
 let pokemonsAttacksEnemy
 let buttonFire
@@ -37,6 +38,8 @@ let playerlifes = 3
 let enemylifes = 3
 let canvas = map.getContext('2d')
 let interval
+let backgroundMap = new Image()
+backgroundMap.src = '../assets/pokemap.png'
 
 const sectionInicialNone = [
   document.getElementById('select-attack'),
@@ -92,7 +95,7 @@ pokemons.push(bulbasaur, charmander, squirtle)
 
 sectionInicialNone[0].style.display = 'none'
 sectionInicialNone[1].style.display = 'none'
-sectionSeeMap.style = 'none'
+sectionSeeMap.style.display = 'none'
 
 pokemons.forEach((pokemon) => {
   pokemonsOptions = `
@@ -273,11 +276,46 @@ const pullAttacks = (petPlayer) => {
   showAttacks(attacks)
 }
 
+const keyPressed = (e) => {
+  switch (e.key) {
+    case 'ArrowUp':
+      moveUp()
+      break
+    case 'ArrowDown':
+      moveDown()
+      break
+    case 'ArrowLeft':
+      moveLeft()
+      break
+    case 'ArrowRight':
+      moveRight()
+      break
+    default:
+      break;
+  }
+}
+
+const getPetItem = () => {
+  for (let i = 0; i < pokemons.length; i++) {
+    if (petPlayer === pokemons[i].name) {
+      return pokemons[i]
+    }
+  }
+}
+
+const initMap = () => {
+  map.width = 320
+  map.height = 240
+  petPlayerObject = getPetItem(petPlayer)
+  interval = setInterval(drawCanvas, 50)
+
+  window.addEventListener('keydown', keyPressed)
+  window.addEventListener('keyup', moveStop)
+}
+
 const selectPetPlayer = () => {
   sectionInicialNone[2].style.display = 'none'
   //sectionInicialNone[0].style.display = 'flex'
-  sectionSeeMap.style.display = 'flex'
-  interval = setInterval(drawCharacter, 50)
 
   switch (true) {
     case inputBulbasaur.checked:
@@ -299,46 +337,56 @@ const selectPetPlayer = () => {
   }
 
   pullAttacks(petPlayer)
+  sectionSeeMap.style.display = 'flex'
+  initMap()
   selectPetEnemy()
 }
 
-buttonPetPlayer.addEventListener('click', selectPetPlayer);
+buttonPetPlayer.addEventListener('click', selectPetPlayer)
 
 const restartGame = () => {
   location.reload();
 }
 
-const drawCharacter = () => {
-  bulbasaur.x = bulbasaur.x + bulbasaur.speedX
-  bulbasaur.y = bulbasaur.y + bulbasaur.speedY
+const drawCanvas = () => {
+  petPlayerObject.x = petPlayerObject.x + petPlayerObject.speedX
+  petPlayerObject.y = petPlayerObject.y + petPlayerObject.speedY
   canvas.clearRect(0, 0, map.width, map.height)
   canvas.drawImage(
-    bulbasaur.mapPhoto,
-    bulbasaur.x,
-    bulbasaur.y,
-    bulbasaur.width,
-    bulbasaur.height
+    backgroundMap,
+    0,
+    0,
+    map.width,
+    map.height
+  )
+  canvas.drawImage(
+    petPlayerObject.mapPhoto,
+    petPlayerObject.x,
+    petPlayerObject.y,
+    petPlayerObject.width,
+    petPlayerObject.height
   )
 }
 
 const moveRight = () => {
-  bulbasaur.speedX = 5
+  petPlayerObject.speedX = 5
 }
 
 const moveDown = () => {
-  bulbasaur.speedY = 5
+  petPlayerObject.speedY = 5
 }
 
 const moveLeft = () => {
-  bulbasaur.speedX = -5
+  petPlayerObject.speedX = -5
 }
+
 const moveUp = () => {
-  bulbasaur.speedY = -5
+  petPlayerObject.speedY = -5
 }
 
 const moveStop = () => {
-  bulbasaur.speedX = 0
-  bulbasaur.speedY = 0
+  petPlayerObject.speedX = 0
+  petPlayerObject.speedY = 0
 }
 
 restartButton.addEventListener('click', restartGame)
