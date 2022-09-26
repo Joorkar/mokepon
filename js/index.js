@@ -47,25 +47,39 @@ const sectionInicialNone = [
   document.getElementById('select-pet'),
 ]
 class Pokemon {
-  constructor(name, photo, life) {
+  constructor(name, photo, life, mapPhoto, x = 10, y = 10) {
     this.name = name
     this.photo = photo
     this.life = life
     this.attacks = []
-    this.x = 20
-    this.y = 30
-    this.width = 80
-    this.height = 80
+    this.x = x
+    this.y = y
+    this.width = 40
+    this.height = 40
     this.mapPhoto = new Image()
-    this.mapPhoto.src = photo
+    this.mapPhoto.src = mapPhoto
     this.speedX = 0
     this.speedY = 0
   }
+
+  drawPokemon() {
+    canvas.drawImage(
+      this.mapPhoto,
+      this.x,
+      this.y,
+      this.width,
+      this.height
+    )
+  }
 }
 
-let bulbasaur = new Pokemon('Bulbasaur', './assets/Bulbasaur.png', 5)
-let charmander = new Pokemon('Charmander', './assets/Charmander.png', 5)
-let squirtle = new Pokemon('Squirtle', './assets/Squirtle.png', 5)
+let bulbasaur = new Pokemon('Bulbasaur', './assets/Bulbasaur.png', 5, '../assets/bulbasaur.png')
+let charmander = new Pokemon('Charmander', './assets/Charmander.png', 5, '../assets/charmander.png')
+let squirtle = new Pokemon('Squirtle', './assets/Squirtle.png', 5, '../assets/squirtle.png')
+
+let bulbasaurEnemy = new Pokemon('Bulbasaur', './assets/Bulbasaur.png', 5, '../assets/bulbasaur.png', 80, 120)
+let charmanderEnemy = new Pokemon('Charmander', './assets/Charmander.png', 5, '../assets/charmander.png', 200, 190)
+let squirtleEnemy = new Pokemon('Squirtle', './assets/Squirtle.png', 5, '../assets/squirtle.png', 150, 95)
 
 bulbasaur.attacks.push(
   { name: '🌱', id: 'button-plant' },
@@ -84,6 +98,30 @@ charmander.attacks.push(
 )
 
 squirtle.attacks.push(
+  { name: '💧', id: 'button-water' },
+  { name: '💧', id: 'button-water' },
+  { name: '💧', id: 'button-water' },
+  { name: '🔥', id: 'button-fire' },
+  { name: '🌱', id: 'button-plant' },
+)
+
+bulbasaurEnemy.attacks.push(
+  { name: '🌱', id: 'button-plant' },
+  { name: '🌱', id: 'button-plant' },
+  { name: '🌱', id: 'button-plant' },
+  { name: '🔥', id: 'button-fire' },
+  { name: '💧', id: 'button-water' },
+)
+
+charmanderEnemy.attacks.push(
+  { name: '🔥', id: 'button-fire' },
+  { name: '🔥', id: 'button-fire' },
+  { name: '🔥', id: 'button-fire' },
+  { name: '💧', id: 'button-water' },
+  { name: '🌱', id: 'button-plant' },
+)
+
+squirtleEnemy.attacks.push(
   { name: '💧', id: 'button-water' },
   { name: '💧', id: 'button-water' },
   { name: '💧', id: 'button-water' },
@@ -184,7 +222,7 @@ const initFight = () => {
 }
 
 const attackRandomEnemy = () => {
-  let petRandomSelect = Math.floor(Math.random() * pokemonsAttacksEnemy.length)
+  /* let petRandomSelect = Math.floor(Math.random() * pokemonsAttacksEnemy.length)
   let petRandomEnemySelected = pokemonsAttacksEnemy[petRandomSelect].name
 
   if (petRandomEnemySelected === '🔥') {
@@ -193,9 +231,9 @@ const attackRandomEnemy = () => {
     attackEnemy.push('WATER')
   } else {
     attackEnemy.push('PLANT')
-  }
+  } */
 
-  /* let attackRandom = random(0, pokemonsAttacksEnemy.length - 1)
+  let attackRandom = random(0, pokemonsAttacksEnemy.length - 1)
 
   switch (true) {
     case attackRandom === 0 || attackRandom === 1:
@@ -207,7 +245,8 @@ const attackRandomEnemy = () => {
     default:
       attackEnemy.push('PLANT')
       break;
-  } */
+  }
+
   console.log(attackEnemy);
   initFight()
 }
@@ -236,11 +275,9 @@ const attackSequence = () => {
   })
 }
 
-const selectPetEnemy = () => {
-  let petRandom = random(0, pokemons.length - 1)
-
-  spanPetEnemy.innerHTML = pokemons[petRandom].name
-  pokemonsAttacksEnemy = pokemons[petRandom].attacks
+const selectPetEnemy = (enemy) => {
+  spanPetEnemy.innerHTML = enemy.name
+  pokemonsAttacksEnemy = enemy.attacks
   attackSequence()
 }
 
@@ -315,7 +352,6 @@ const initMap = () => {
 
 const selectPetPlayer = () => {
   sectionInicialNone[2].style.display = 'none'
-  //sectionInicialNone[0].style.display = 'flex'
 
   switch (true) {
     case inputBulbasaur.checked:
@@ -339,13 +375,45 @@ const selectPetPlayer = () => {
   pullAttacks(petPlayer)
   sectionSeeMap.style.display = 'flex'
   initMap()
-  selectPetEnemy()
 }
 
 buttonPetPlayer.addEventListener('click', selectPetPlayer)
 
 const restartGame = () => {
   location.reload();
+}
+
+const moveStop = () => {
+  petPlayerObject.speedX = 0
+  petPlayerObject.speedY = 0
+}
+
+const checkCollision = (enemy) => {
+  const upEnemy = enemy.y
+  const rightEnemy = enemy.x + enemy.width
+  const downEnemy = enemy.y + enemy.height
+  const leftEnemy = enemy.x
+
+  const upPet = petPlayerObject.y
+  const rightPet = petPlayerObject.x + petPlayerObject.width
+  const downPet = petPlayerObject.y + petPlayerObject.height
+  const leftPet = petPlayerObject.x
+
+  if (
+    downPet < upEnemy ||
+    upPet > downEnemy ||
+    rightPet < leftEnemy ||
+    leftPet > rightEnemy
+  ) {
+    return
+  }
+
+  moveStop()
+  clearInterval(interval)
+  console.log('Collision detected');
+  sectionInicialNone[0].style.display = 'flex'
+  sectionSeeMap.style.display = 'none'
+  selectPetEnemy(enemy)
 }
 
 const drawCanvas = () => {
@@ -359,13 +427,16 @@ const drawCanvas = () => {
     map.width,
     map.height
   )
-  canvas.drawImage(
-    petPlayerObject.mapPhoto,
-    petPlayerObject.x,
-    petPlayerObject.y,
-    petPlayerObject.width,
-    petPlayerObject.height
-  )
+  petPlayerObject.drawPokemon()
+  bulbasaurEnemy.drawPokemon()
+  charmanderEnemy.drawPokemon()
+  squirtleEnemy.drawPokemon()
+
+  if (petPlayerObject.speedX !== 0 || petPlayerObject.speedY !== 0) {
+    checkCollision(bulbasaurEnemy)
+    checkCollision(charmanderEnemy)
+    checkCollision(squirtleEnemy)
+  }
 }
 
 const moveRight = () => {
@@ -382,11 +453,6 @@ const moveLeft = () => {
 
 const moveUp = () => {
   petPlayerObject.speedY = -5
-}
-
-const moveStop = () => {
-  petPlayerObject.speedX = 0
-  petPlayerObject.speedY = 0
 }
 
 restartButton.addEventListener('click', restartGame)
