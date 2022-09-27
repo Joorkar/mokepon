@@ -78,8 +78,8 @@ input:checked+label {
   background: transparent;
   border: 1px solid var(--color-ligth-secondary);
   color: var(--color-light-primary);
-    font-family: 'Poppins', sans-serif;
-    margin-top: 20px;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 20px;
 }
 #select-attack {
   flex-direction: column;
@@ -167,10 +167,21 @@ input:checked+label {
   justify-content: center;
 }
 
+#see-map button {
+  width: 80px;
+  height: 40px;
+  border-radius: 20px;
+  background: transparent;
+  border: 1px solid var(--color-ligth-secondary);
+  color: var(--color-light-primary);
+  font-family: 'Poppins', sans-serif;
+  margin: 10px 0 5px 0;
+}
+
 #map {
   border: 2px solid white;
 }
-@media (max-width: 550px) {
+@media (max-width: 560px) {
   .cards {
     flex-direction: column;
   }
@@ -198,5 +209,13 @@ input:checked+label {
   .attacks-enemy p {
     margin: 5px 0 0 0;
     font-size: 14px;
+  }
+}
+
+@media (max-width: 300px) {
+  #see-map div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;;
   }
 }

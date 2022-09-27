@@ -15,6 +15,8 @@ const containerAttacks = document.getElementById('container-attacks');
 const sectionSeeMap = document.getElementById('see-map')
 const map = document.getElementById('map')
 
+const widthMapMax = 350
+
 let pokemons = []
 let attackPlayer = []
 let attackEnemy = []
@@ -40,22 +42,36 @@ let canvas = map.getContext('2d')
 let interval
 let backgroundMap = new Image()
 backgroundMap.src = '../assets/pokemap.png'
+let heightRandom
+let widthMap = window.innerWidth - 20
+
+if (widthMap > widthMapMax) {
+  widthMap = widthMapMax - 20
+}
+
+heightRandom = widthMap * 600 / 800
+
+map.width = widthMap
+map.height = heightRandom
 
 const sectionInicialNone = [
   document.getElementById('select-attack'),
   document.getElementById('restart'),
   document.getElementById('select-pet'),
 ]
+
+const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+
 class Pokemon {
-  constructor(name, photo, life, mapPhoto, x = 10, y = 10) {
+  constructor(name, photo, life, mapPhoto) {
     this.name = name
     this.photo = photo
     this.life = life
     this.attacks = []
-    this.x = x
-    this.y = y
     this.width = 40
     this.height = 40
+    this.x = random(0, map.width - this.width)
+    this.y = random(0, map.height - this.height)
     this.mapPhoto = new Image()
     this.mapPhoto.src = mapPhoto
     this.speedX = 0
@@ -77,9 +93,9 @@ let bulbasaur = new Pokemon('Bulbasaur', './assets/Bulbasaur.png', 5, '../assets
 let charmander = new Pokemon('Charmander', './assets/Charmander.png', 5, '../assets/charmander.png')
 let squirtle = new Pokemon('Squirtle', './assets/Squirtle.png', 5, '../assets/squirtle.png')
 
-let bulbasaurEnemy = new Pokemon('Bulbasaur', './assets/Bulbasaur.png', 5, '../assets/bulbasaur.png', 80, 120)
-let charmanderEnemy = new Pokemon('Charmander', './assets/Charmander.png', 5, '../assets/charmander.png', 200, 190)
-let squirtleEnemy = new Pokemon('Squirtle', './assets/Squirtle.png', 5, '../assets/squirtle.png', 150, 95)
+let bulbasaurEnemy = new Pokemon('Bulbasaur', './assets/Bulbasaur.png', 5, '../assets/bulbasaur.png')
+let charmanderEnemy = new Pokemon('Charmander', './assets/Charmander.png', 5, '../assets/charmander.png')
+let squirtleEnemy = new Pokemon('Squirtle', './assets/Squirtle.png', 5, '../assets/squirtle.png')
 
 bulbasaur.attacks.push(
   { name: '🌱', id: 'button-plant' },
@@ -150,8 +166,6 @@ pokemons.forEach((pokemon) => {
   inputCharmander = document.getElementById('Charmander')
   inputSquirtle = document.getElementById('Squirtle')
 })
-
-const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 
 const createMessage = (result) => {
   let newPlayerAttack = document.createElement('p')
@@ -341,8 +355,6 @@ const getPetItem = () => {
 }
 
 const initMap = () => {
-  map.width = 320
-  map.height = 240
   petPlayerObject = getPetItem(petPlayer)
   interval = setInterval(drawCanvas, 50)
 
