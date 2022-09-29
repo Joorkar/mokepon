@@ -468,3 +468,17 @@ const moveUp = () => {
 }
 
 restartButton.addEventListener('click', restartGame)
+
+const joinToGame = () => {
+  fetch('http://localhost:8080/join')
+    .then((res) => {
+      if (res.ok) {
+        res.text()
+          .then((answer) => {
+            console.log(answer);
+          })
+      }
+    })
+}
+
+joinToGame()
